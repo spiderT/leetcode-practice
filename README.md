@@ -2,7 +2,7 @@
 
 ## 1. 算法
 
-### 1. 两数之和
+### 1.1. 两数之和
 
 给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。
 
@@ -83,7 +83,7 @@ var twoSum = function(nums, target) {
 };
 ```
 
-### 2. 两数相加
+### 1.2. 两数相加
 
 给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
 
@@ -141,7 +141,7 @@ var addTwoNumbers = function(l1, l2) {
 };
 ```
 
-### 3. 两数相加
+### 1.3. 无重复字符的最长子串  
 
 给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
 
@@ -206,7 +206,7 @@ var lengthOfLongestSubstring = function(s) {
 
 ```
 
-### 4. 寻找两个有序数组的中位数
+### 1.4. 寻找两个有序数组的中位数
 
 给定两个大小为 m 和 n 的有序数组 nums1 和 nums2。
 
@@ -290,4 +290,133 @@ var findMedianSortedArrays = function (nums1, nums2) {
     }
     return 0;
 }
+```
+
+### 1.5. 最长回文子串
+给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。
+
+示例 1：
+
+输入: "babad"
+输出: "bab"
+注意: "aba" 也是一个有效答案。
+
+示例 2：
+
+输入: "cbbd"
+输出: "bb"
+
+
+- 暴力法 提交时直接超出时间限制
+```js
+var longestPalindrome = function (s) {
+    function isPalindrome(str) {
+        var len = str.length
+        var middle = parseInt(len / 2)
+        for (var i = 0; i < middle; i++) {
+            if (str[i] !== str[len - i - 1]) {
+                return false
+            }
+        }
+        return true
+    }
+    var ans = '', max = 0, len = s.length;
+    for (var i = 0; i < len; i++) {
+        for (var r = i + 1; r <= len; r++) {
+            var tmpStr = s.substring(i, r)
+            if (isPalindrome(tmpStr) && tmpStr.length > max) {
+                ans = s.substring(i, r)
+                max = Math.max(max, tmpStr.length)
+            }
+        }
+    }
+    return ans;
+
+}
+```
+
+- 中心扩散法
+
+```js
+var longestPalindrome = function(s) {
+    if (!s || !s.trim()) return '';
+    if (s.length === 1) return s;
+    if (s.length === 2) return s[0] === s[1] ? s[0] + s[1] : s[1];
+    let result = '';
+    /**
+    *扩散坐标
+    */
+    var calPalindromeIndex = function(left,right,s){
+        let len = s.length;
+        while(left>=0&&right<len&&s[left] == s[right]){
+            left--;
+            right++;
+        }
+        return {left:left+1,right:right}
+    }
+    for(let i = 0,len = s.length;i<len;i++){
+        let even = '';
+        let odd = '';
+        if(s[i] == s[i+1]){
+            //经过当前位与下一位判断已构成回文，扩散位直接从下一位开始，可以提速
+            let evenIndex = calPalindromeIndex(i-1,i+2,s);
+            even = s.slice(evenIndex.left,evenIndex.right);
+        }
+        let oddIndex = calPalindromeIndex(i-1,i+1,s);
+        odd = s.slice(oddIndex.left,oddIndex.right);
+        let re = odd.length>even.length?odd:even;
+        result = result.length>re.length?result:re;
+    }
+    return result;
+};
+
+```
+
+- 动态规划
+
+```js
+var longestPalindrome = function (s) {
+    if (!s || s.length == 0 || s.length == 1) {
+        return s;
+    }
+    var s_f = s.split('').reverse().join('');
+    var resultStr = s[0];
+    var maxLen = 1;
+    var tmpLen = 1;
+    var len = s.length;
+    //判断字符串是否回文
+    function isPalinerome(i, r) {
+        if (len - i - 1 == r - tmpLen + 1) {
+            return true
+        }
+        return false;
+    }
+    //初始化二维数组
+    var len = s.length;
+    var arr = new Array(len);
+    for (var i = 0; i < len; i++) {
+        arr[i] = [];
+        for (var r = 0; r < len; r++) {
+            arr[i][r] = 0
+        }
+    }
+    for (var i = 0; i < len; i++) {
+        for (var r = 0; r < len; r++) {
+            if (s[i] == s_f[r]) {
+                if (i == 0 || r == 0) {
+                    arr[i][r] = 1
+                } else {
+                    arr[i][r] = arr[i - 1][r - 1] + 1
+                    tmpLen = arr[i][r]
+                }
+                if (tmpLen > maxLen && isPalinerome(i, r)) {
+                    maxStrIndex = r;
+                    maxLen = tmpLen;
+                    resultStr = s.substring(i - tmpLen + 1, i + 1);
+                }
+            }
+        }
+    }
+    return resultStr;
+};
 ```
