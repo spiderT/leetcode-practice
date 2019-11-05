@@ -449,3 +449,62 @@ L     D     R
 E   O E   I I
 E C   I H   N
 T     S     G
+
+```js
+/**
+ * @param {string} s
+ * @param {number} numRows
+ * @return {string}
+ */
+var convert = function(s, numRows) {
+    let arr = [], count = 0, add = true;
+    if (numRows === 1) {
+        return s;
+    }
+    for (let i = 0; i < s.length; i++) {
+        arr[count] = arr[count] ? arr[count] + s[i] : s[i];
+        if (count === 0) {
+            add = true;
+        } else if (count === numRows - 1) {
+            add = false;
+        }
+        count = add ? count + 1 : count - 1;
+    }
+    return arr.join('');
+};
+```
+### 1.7. 整数反转
+
+给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
+
+示例 1:
+
+输入: 123
+输出: 321
+ 示例 2:
+
+输入: -123
+输出: -321
+示例 3:
+
+输入: 120
+输出: 21
+
+```js
+/**
+ * @param {number} x
+ * @return {number}
+ */
+var reverse = function (x) {
+    if (x === 0 || x < (Math.pow(-2, 31)) || x > (Math.pow(2, 31) - 1)) return 0;
+    let flag = true;
+    if (x < 0) {
+        x * -1
+        flag = false
+    }
+    let result = parseInt(x.toString().split("").reverse().join(""));
+    if (result < (Math.pow(-2, 31)) || result > (Math.pow(2, 31) - 1)) return 0;
+    if (!flag) return result * -1;
+    return result
+};
+```
