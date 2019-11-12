@@ -30,7 +30,7 @@ var reverse = function (x) {
     return result
 };
 
-var x= 120
+var x = 120
 var result = reverse(x);
 
-console.log('result',result);
+console.log('result', result);
