@@ -634,3 +634,48 @@ s = "mississippi"
 p = "mis*is*p*."
 输出: false
 
+```js
+/**
+ * @param {string} s
+ * @param {string} p
+ * @return {boolean}
+ */
+var isMatch = function (s, p) {
+    if (s === null || p === null) {
+        return false;
+    }
+    let m = s.length + 1, n = p.length + 1;
+    let dp = new Array(m);
+    for (let i = 0; i < m; i++) {
+        dp[i] = new Array(n)
+        for (let j = 0; j < n; j++) {
+            dp[i][j] = false;
+        }
+    }
+    dp[0][0] = true;
+    for (let j = 2; j < n; j++) {
+        if (p[j - 1] === '*') {
+            dp[0][j] = dp[0][j - 2];
+        }
+    }
+    let curS = 0, curP = 0,preCurP = 0;
+    for (let i = 1; i < m; i++) {
+        for (let j = 1; j < n; j++) {
+            curS = s[i - 1];
+            curP = p[j - 1];
+            preCurP = p[j - 2];
+            if (curP === '.' || curS === curP) {
+                dp[i][j] = dp[i - 1][j - 1];
+            } else if (curP === '*') {
+                if (preCurP !== '.' && preCurP !== curS) {
+                    dp[i][j] = dp[i][j - 2]
+                }
+                else {
+                    dp[i][j] = dp[i - 1][j - 2] || dp[i - 1][j] || dp[i][j - 2]
+                }
+            }
+        }
+    }
+    return dp[m - 1][n - 1];
+}
+```
