@@ -687,6 +687,8 @@ var isMatch = function (s, p) {
 
 说明：你不能倾斜容器，且 n 的值至少为 2。
 
+![盛最多水的容器](../images/question_11.jpg)
+
 示例:
 
 输入: [1,8,6,2,5,4,8,3,7]
