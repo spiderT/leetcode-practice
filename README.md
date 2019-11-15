@@ -887,3 +887,98 @@ var romanToInt = function (s) {
     return ans;
 };
 ```
+
+
+### 1.14. 最长公共前缀
+
+编写一个函数来查找字符串数组中的最长公共前缀。
+
+如果不存在公共前缀，返回空字符串 ""。
+
+示例 1:
+
+输入: ["flower","flow","flight"]
+输出: "fl"
+示例 2:
+
+输入: ["dog","racecar","car"]
+输出: ""
+解释: 输入不存在公共前缀。
+说明:
+
+所有输入只包含小写字母 a-z 。
+
+1. 题解1
+
+```js
+/**
+ * @param {string[]} strs
+ * @return {string}
+ */
+var longestCommonPrefix = function (strs) {
+    let result = '';
+    if (!strs.length) return result;
+    for (let j = 0; let < strs[0].length; j++) {
+        for (let i = 1; i < strs.length; i++) {
+            if (strs[i][j] != strs[0][j]) {
+                return result;
+            }
+        }
+        result += strs[0][j];
+    }
+    return result;
+};
+```
+
+2. 题解2:递归解法
+
+```js
+var longestCommonPrefix = function (strs,re = '') {
+    if (!strs.length) return re;
+    if (strs.length == 1) return strs[0];
+    for (var i = 1; i < strs.length; i++) {
+        if (!strs[i][0]) return re
+        if (strs[i][0] != strs[0][0]) return re
+        strs[i] = strs[i].slice(1,strs[i].length);
+    }
+    re += strs[0][0];
+    strs[0] = strs[0].slice(1,strs[0].length);
+    return longestCommonPrefix(strs, re);
+};
+
+```
+3. 题解3,和解一恰好相反，re初始化为数组中第一个元素，逐个比较，当比较通过时返回re，否则削去末位直至比较通过。这里的比较使用了正则表达式。
+
+```js
+var longestCommonPrefix = function(strs) {
+    var re = strs[0] ? strs[0]:'';
+    for (var i=1;i<strs.length;i++){
+        var regex = new RegExp('^'+re);
+        while (!regex.test(strs[i])&&re.length){
+            re = re.slice(0,re.length-1);
+            regex = new RegExp('^'+re);
+        }
+    }
+    return re;
+};
+
+```
+4. 官方题解1
+
+- 时间复杂度：O(S)O(S)，S 是所有字符串中字符数量的总和。
+
+- 空间复杂度：O(1)O(1)，我们只需要使用常数级别的额外空间。
+
+
+```js
+var longestCommonPrefix = function (strs) {
+    if (strs.length == 0) return "";
+    let prefix = strs[0];
+    for (let i = 1; i < strs.length; i++)
+        while (strs[i].indexOf(prefix) != 0) {
+            prefix = prefix.substring(0, prefix.length - 1);
+            if (!prefix) return "";
+        }
+    return prefix;
+}
+```
