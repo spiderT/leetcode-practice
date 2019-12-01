@@ -20,15 +20,16 @@
  * @return {void} Do not return anything, modify nums1 in-place instead.
  */
 var merge = function (nums1, m, nums2, n) {
-    var j = 0;//nums1的第j位
-    for (var i = 0; i < nums2.length; i++) {//nums2的第i位
-        while (!(nums2[i] < nums1[j] || j >= m + i)) j++;
-        for (var k = nums1.length - 1; k > j; k--) nums1[k] = nums1[k - 1];
+    let j = 0;
+    const len1 = nums1.length;
+    const len2 = nums2.length;
+    for (let i = 0; i < len2; i++) {
+        while (!(nums1[j] > nums2[i] || j >= m + i)) {
+            j++;
+        }
+        for (let k = len1 - 1; k > j; k--) {
+            nums1[k] = nums1[k - 1]
+        };
         nums1[j] = nums2[i];
     }
-
-作者：rhinoc
-链接：https://leetcode-cn.com/problems/merge-sorted-array/solution/javascript-he-bing-liang-ge-you-xu-shu-zu-by-rhino/
-来源：力扣（LeetCode）
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 };
