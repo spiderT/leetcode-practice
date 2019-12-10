@@ -1220,3 +1220,35 @@ var letterCombinations = function(digits) {
     return result;
 };
 ```
+
+- 题解3
+
+```js
+/**
+ * @param {string} digits
+ * @return {string[]}
+  */
+var letterCombinations = function(digits) {
+    if (digits.length === 0) {
+        return []
+     }
+    const dict = [[],[],['a','b','c'],['d','e','f'],['g','h','i'],['j','k','l'],['m','n','o'],['p','q','r','s'],['t','u','v'],['w','x','y','z']]
+    let result = dict[digits[0]]
+    // 求两个数组的笛卡尔积组合
+    let helper = function (arr1, arr2) {
+      let result = []
+      for (let i=0; i<arr1.length; i++) {
+        for (let j=0; j<arr2.length; j++) {
+          result.push(arr1[i] + arr2[j])
+        }
+      }
+      return result
+    }
+    // 因为用第一个数字初始化 从第二个数字循环到最后
+    for (let i=1; i<digits.length; i++) {
+      result = helper(result, dict[digits[i]])
+    }
+    
+    return result
+  };
+```
