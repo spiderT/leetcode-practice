@@ -55,9 +55,7 @@ var letterCombinations = function(digits) {
     if (digits.length === 0) {
         return []
      }
-    // 号码盘字典 数组下标对应号码
-    let dict = [[],[],['a','b','c'],['d','e','f'],['g','h','i'],['j','k','l'],['m','n','o'],['p','q','r','s'],['t','u','v'],['w','x','y','z']]
-    // 初始化结果
+    const dict = [[],[],['a','b','c'],['d','e','f'],['g','h','i'],['j','k','l'],['m','n','o'],['p','q','r','s'],['t','u','v'],['w','x','y','z']]
     let result = dict[digits[0]]
     // 求两个数组的笛卡尔积组合
     let helper = function (arr1, arr2) {
